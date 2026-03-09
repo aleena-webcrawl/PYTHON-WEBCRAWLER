@@ -78,7 +78,7 @@ def compute_idf(inverted_index, total_docs):
 
 def save_json(data, filename):
     with open(filename, "w", encoding="utf-8") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 # TASK 9 – Validation
 
