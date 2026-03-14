@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mini Search Engine</title>
+</head>
+
+<body>
+
+<h1>Search Engine Demo</h1>
+
+<input type="text" id="query" placeholder="Enter search query">
+<button onclick="search()">Search</button>
+
+<h2>Results</h2>
+<div id="results"></div>
+
+<script>
+
+async function search() {
+
+    let query = document.getElementById("query").value;
+
+    let response = await fetch("http://127.0.0.1:8000/search?query=" + query);
+
+    let data = await response.json();
+
+    let resultsDiv = document.getElementById("results");
+
+    resultsDiv.innerHTML = "";
+
+    data.results.forEach(function(item){
+
+        let p = document.createElement("p");
+
+        p.innerText = "Document ID: " + item.doc_id + " | Score: " + item.score;
+
+        resultsDiv.appendChild(p);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
