@@ -1,46 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mini Search Engine</title>
+    <title>webscour</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 50%;
+            margin: 100px auto 0 auto; 
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-left: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 20px;
+            text-align: left; 
+        }
+
+        #results p {
+            background-color: #f1f1f1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <h1>WEBSCOUR</h1>
 
-<h1>Search Engine Demo</h1>
+        <input type="text" id="query" placeholder="Enter search query">
+        <button onclick="search()">Search</button>
 
-<input type="text" id="query" placeholder="Enter search query">
-<button onclick="search()">Search</button>
+        <h2>Results</h2>
+        <div id="results"></div>
+    </div>
 
-<h2>Results</h2>
-<div id="results"></div>
+    <script>
+        async function search() {
+            let query = document.getElementById("query").value;
 
-<script>
+            let response = await fetch("http://127.0.0.1:8000/search?query=" + encodeURIComponent(query));
+            let data = await response.json();
 
-async function search() {
+            let resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
 
-    let query = document.getElementById("query").value;
-
-    let response = await fetch("http://127.0.0.1:8000/search?query=" + query);
-
-    let data = await response.json();
-
-    let resultsDiv = document.getElementById("results");
-
-    resultsDiv.innerHTML = "";
-
-    data.results.forEach(function(item){
-
-        let p = document.createElement("p");
-
-        p.innerText = "Document ID: " + item.doc_id + " | Score: " + item.score;
-
-        resultsDiv.appendChild(p);
-
-    });
-
-}
-
-</script>
-
+            data.results.forEach(function(item){
+                let p = document.createElement("p");
+                p.innerText = "Document ID: " + item.doc_id + " | Score: " + item.score;
+                resultsDiv.appendChild(p);
+            });
+        }
+    </script>
 </body>
 </html>
